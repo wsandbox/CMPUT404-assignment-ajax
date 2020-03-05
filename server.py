@@ -20,6 +20,8 @@
 # remember to:
 #     pip install flask
 
+# curl -v   -H "Content-Type: application/json" -X PUT http://127.0.0.1:5000/entity/X -d '{"x":1,"y":1}' 
+
 
 import flask
 from flask import Flask, request
@@ -71,26 +73,14 @@ def hello():
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
-    pdb.set_trace()
-    # try:
-    #     data = flask_post_json()
-    # except json.decoder.JSONDecodeError as e:
-    #     v = request.data.decode("utf8")[1:-1]
-    #     new = v.strip('{')
-    #     new = new.strip('}')
-    #     new = new.split(',')
-    #     data = {}
-    #     for item in new:
-    #         t = item.split(':')
-    #         data[t[0]]=t[1]
-    #     data = json.dumps(data, indent=4, sort_keys=True)
+    data = request.get_json()
     # pdb.set_trace()
-    # if request.method =="PUT":
-    #     myWorld.set(entity, data)
-    # elif request.method =="POST":
-    #     return
-    
-    return world()
+    if request.method =="PUT":
+        myWorld.set(entity, data)
+    elif request.method =="POST":
+        myWorld.update(entity, "x", data["x"])
+        myWorld.update(entity, "y", data["y"])
+    return flask.jsonify(myWorld.world())
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
