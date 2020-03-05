@@ -71,23 +71,24 @@ def hello():
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
-    try:
-        data = flask_post_json()
-    except json.decoder.JSONDecodeError as e:
-        v = request.data.decode("utf8")[1:-1]
-        new = v.strip('{')
-        new = new.strip('}')
-        new = new.split(',')
-        data = {}
-        for item in new:
-            t = item.split(':')
-            data[t[0]]=t[1]
-        data = json.dumps(data, indent=4, sort_keys=True)
     pdb.set_trace()
-    if request.method =="PUT":
-        myWorld.set(entity, data)
-    elif request.method =="POST":
-        return
+    # try:
+    #     data = flask_post_json()
+    # except json.decoder.JSONDecodeError as e:
+    #     v = request.data.decode("utf8")[1:-1]
+    #     new = v.strip('{')
+    #     new = new.strip('}')
+    #     new = new.split(',')
+    #     data = {}
+    #     for item in new:
+    #         t = item.split(':')
+    #         data[t[0]]=t[1]
+    #     data = json.dumps(data, indent=4, sort_keys=True)
+    # pdb.set_trace()
+    # if request.method =="PUT":
+    #     myWorld.set(entity, data)
+    # elif request.method =="POST":
+    #     return
     
     return world()
 
