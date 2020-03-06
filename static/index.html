@@ -31,7 +31,6 @@ var context = canvas.getContext("2d");
 var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
-
 // function sendJSONXMLHTTPRequest(url, objects, callback) {
 //     var req = new Request();
 //     req.onreadystatechange = function () {
@@ -56,7 +55,7 @@ function drawCircle(context,entity) {
 
     with(context) {
         beginPath();              
-        lineWidth = 3;
+        lineWidth = 2;
         var x = entity["x"];
         var y = entity["y"];
         //moveTo(x,y);
@@ -162,7 +161,7 @@ function getFetch(url){
 function addEntity(entity, data) {
     world[entity] = data;
     url = 'http://127.0.0.1:5000/entity'+entity
-    let promise = putRequest(url, data)
+    putRequest(url, data)
     // .then(data => console.log(data)) 
     // .catch(error => console.error(error))
     drawNextFrame(); // (but should we?)
@@ -185,7 +184,7 @@ function update() {
 
 var counter = 0;
 function addEntityWithoutName(data) {
-    var name = "X"+(counter++)%100;
+    var name = "X"+(counter++)%1000;
     addEntity(name,data);
 }
 
