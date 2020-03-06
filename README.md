@@ -17,6 +17,8 @@ Sources:
 https://github.com/uofa-cmput404/cmput404-slides/blob/master/examples/ObserverExampleAJAX/static/observer.js
 https://flask.palletsprojects.com/en/1.1.x/api/
 https://gist.github.com/justsml/529d0b1ddc5249095ff4b890aad5e801#easy-get-json-from-a-url
+
 Collaborators:
 ==============
 Daniel Cones (dcones)
+Noah Kryzanowki (nkryzano)
