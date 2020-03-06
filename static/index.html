@@ -134,26 +134,53 @@ function getPosition(e) {
 	}
 }
 
-//credit to https://gist.github.com/justsml/529d0b1ddc5249095ff4b890aad5e801#easy-get-json-from-a-url for the tutorial
 function putRequest(url, data) {
   return fetch(url, {
-    credentials: 'same-origin',
     method: 'PUT',
     body: JSON.stringify(data), // Coordinate the body type with 'Content-Type'
     headers: new Headers({
       'Content-Type': 'application/json'
     }),
   })
-  .then(response => response.json())
+//   .then((response)=>{
+//         response.json();
+//     });
+}
+
+function getFetch(url){
+    return fetch(url, {
+        method: 'GET',
+        headers: new Headers({
+            'Content-Type': 'application/json'
+        }),
+    })
+    // .then((response)=>{
+    //     response.json();
+    // });
 }
 
 function addEntity(entity, data) {
-    console.log(entity);
     world[entity] = data;
-    putRequest('entity/'+entity, data)
-    .then(data => console.log(data)) 
-    .catch(error => console.error(error))
+    url = 'http://127.0.0.1:5000/entity'+entity
+    let promise = putRequest(url, data)
+    // .then(data => console.log(data)) 
+    // .catch(error => console.error(error))
     drawNextFrame(); // (but should we?)
+}
+
+
+function update() {
+    drawFrame();
+    getFetch('http://127.0.0.1:5000/world')
+    // .then((response)=>{
+    //     world=response;
+    // });
+    .then(response => {
+        for(x in response){
+            world[x]=response[x];
+        }
+    })
+    // .catch(error => console.error(error));
 }
 
 var counter = 0;
@@ -266,20 +293,6 @@ mouse.mouseuppers.push(function(x,y,clicked,e) {
 mouse.mousedraggers.push(function(x,y,clicked,e) {
     addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(),'radius':Math.pow(x-y, 2)/1000});
 });
-
-
-function update() {
-
-    drawFrame();
-    data = fetch('world')
-    .then(response => {
-        for(x in response){
-            addEntity(x, response[x]);
-        }
-    })
-    .catch(error => console.error(error));
-
-}
 
 // 30 frames per second
 setInterval( update, 1000/30.0);
