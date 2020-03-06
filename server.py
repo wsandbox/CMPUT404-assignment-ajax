@@ -75,12 +75,13 @@ def hello():
 def update(entity):
     data = request.get_json()
     # pdb.set_trace()
-    if request.method =="PUT":
-        myWorld.set(entity, data)
-    elif request.method =="POST":
-        myWorld.update(entity, "x", data["x"])
-        myWorld.update(entity, "y", data["y"])
-    return flask.jsonify(myWorld.world())
+    myWorld.set(entity, data)
+    # if request.method =="PUT":
+    #     myWorld.set(entity, data)
+    # elif request.method =="POST":
+    #     myWorld.update(entity, "x", data["x"])
+    #     myWorld.update(entity, "y", data["y"])
+    return flask.jsonify(entity)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():

@@ -32,21 +32,21 @@ var W = canvas.width  = window.innerWidth-6;
 var H = canvas.height = window.innerHeight-50;
 
 
-function sendJSONXMLHTTPRequest(url, objects, callback) {
-    var req = new Request();
-    req.onreadystatechange = function () {
-        if (req.readyState==4) {
-            try {
-                if (req.status==200) {
-                    postRequest('127.0.0.01:5000/world', "");
-                }
-            } 
-            catch(e) {
-                alert('Error: ' + e.name);
-            }
-        }
-    };
-}
+// function sendJSONXMLHTTPRequest(url, objects, callback) {
+//     var req = new Request();
+//     req.onreadystatechange = function () {
+//         if (req.readyState==4) {
+//             try {
+//                 if (req.status==200) {
+//                     postRequest('127.0.0.01:5000/world', "");
+//                 }
+//             } 
+//             catch(e) {
+//                 alert('Error: ' + e.name);
+//             }
+//         }
+//     };
+// }
 
 
 world = {};
@@ -279,9 +279,10 @@ function update() {
 
     drawFrame();
     data = fetch('localhost:5000/world')
-    .then(response => response.json())
-    .then(data => {
-    console.log(data) // Prints result from `response.json()` in getRequest
+    .then(response => {
+        for(x in response){
+            addEntity(x, response[x]);
+        }
     })
     .catch(error => console.error(error));
 
