@@ -135,10 +135,10 @@ function getPosition(e) {
 }
 
 //credit to https://gist.github.com/justsml/529d0b1ddc5249095ff4b890aad5e801#easy-get-json-from-a-url for the tutorial
-function postRequest(url, data) {
+function putRequest(url, data) {
   return fetch(url, {
     credentials: 'same-origin',
-    method: 'POST',
+    method: 'PUT',
     body: JSON.stringify(data), // Coordinate the body type with 'Content-Type'
     headers: new Headers({
       'Content-Type': 'application/json'
@@ -150,11 +150,10 @@ function postRequest(url, data) {
 function addEntity(entity, data) {
     console.log(entity);
     world[entity] = data;
-    postRequest('localhost:5000/entity/'+entity, data)
-    .then(data => console.log(data)) // Result from the `response.json()` call
+    putRequest('entity/'+entity, data)
+    .then(data => console.log(data)) 
     .catch(error => console.error(error))
     drawNextFrame(); // (but should we?)
-    //XXX: Send a XHTML Request that updates the entity you just  modified!
 }
 
 var counter = 0;
@@ -163,9 +162,6 @@ function addEntityWithoutName(data) {
     addEntity(name,data);
 }
 
-// canvas + mouse/touch is complicated 
-// I give you this because well the mouse/touch stuff is a total
-// pain to get right. This has some out of context bug too.
 mouse = (function() {
     // Now this isn't the most popular way of doing OO in 
     // Javascript, but it relies on lexical scope and I like it
@@ -259,9 +255,6 @@ mouse = (function() {
     return self;
 })();
 
-
-// Add the application specific mouse listeners!
-//XXX: TODO Make these prettier!
 mouse.mousedowners.push(function(x,y,clicked,e) {
     addEntityWithoutName({'x':x,'y':y,'colour':getRandomColor(), 'radius':Math.pow(x-y, 2)/1000});
 });
@@ -278,7 +271,7 @@ mouse.mousedraggers.push(function(x,y,clicked,e) {
 function update() {
 
     drawFrame();
-    data = fetch('localhost:5000/world')
+    data = fetch('world')
     .then(response => {
         for(x in response){
             addEntity(x, response[x]);

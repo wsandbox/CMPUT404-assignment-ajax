@@ -73,29 +73,28 @@ def hello():
 
 @app.route("/entity/<entity>", methods=['POST','PUT'])
 def update(entity):
-    data = request.get_json()
+    data = flask_post_json()
     # pdb.set_trace()
     myWorld.set(entity, data)
-    # if request.method =="PUT":
-    #     myWorld.set(entity, data)
-    # elif request.method =="POST":
-    #     myWorld.update(entity, "x", data["x"])
-    #     myWorld.update(entity, "y", data["y"])
-    return flask.jsonify(entity)
+    headers = [("Content-Type", 'application/json')]
+    return (myWorld.get(entity), 200, headers)
 
 @app.route("/world", methods=['POST','GET'])    
 def world():
-    return flask.jsonify(myWorld.world())
+    headers = [("Content-Type", 'application/json')]
+    return (myWorld.world(), 200, headers)
 
 @app.route("/entity/<entity>")    
 def get_entity(entity):
     e = myWorld.get(entity)
-    return flask.jsonify(e)
+    headers = [("Content-Type", 'application/json')]
+    return (e, 200, headers)
 
 @app.route("/clear", methods=['POST','GET'])
 def clear():
     myWorld.clear()
-    return flask.jsonify(dict())
+    headers = [("Content-Type", 'application/json')]
+    return (myWorld.world(), 200, headers)
 
 if __name__ == "__main__":
     app.run()
